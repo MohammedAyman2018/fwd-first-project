@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import app from '../index';
-
+import sharp from 'sharp';
 const request = supertest(app);
 
 describe('Test query validation', () => {
@@ -42,5 +42,16 @@ describe('Test the logic', () => {
     );
     expect(response.status).toBe(500);
     expect(response.body).toBe("Can't find this image.");
+  });
+  it('Api Should return a buffer image of 300 width and 600 height', async () => {
+    const response = await request.get(
+      '/api/images?fileName=fjord.jpg&width=300&height=600'
+    );
+    expect(response.body).toBeInstanceOf(Buffer);
+    expect(response.type).toBe('image/png');
+    const metadata = await sharp(response.body).metadata();
+    expect(metadata.width).toBe(300);
+    expect(metadata.height).toBe(600);
+    expect(response.status).toBe(200);
   });
 });

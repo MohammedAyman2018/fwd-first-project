@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../index"));
+const sharp_1 = __importDefault(require("sharp"));
 const request = (0, supertest_1.default)(index_1.default);
 describe('Test query validation', () => {
     it('Should give status 400 if no fileName query', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -47,5 +48,14 @@ describe('Test the logic', () => {
         const response = yield request.get('/api/images?fileName=anything&width=300&height=200');
         expect(response.status).toBe(500);
         expect(response.body).toBe("Can't find this image.");
+    }));
+    it('Api Should return a buffer image of 300 width and 600 height', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/api/images?fileName=fjord.jpg&width=300&height=600');
+        expect(response.body).toBeInstanceOf(Buffer);
+        expect(response.type).toBe('image/png');
+        const metadata = yield (0, sharp_1.default)(response.body).metadata();
+        expect(metadata.width).toBe(300);
+        expect(metadata.height).toBe(600);
+        expect(response.status).toBe(200);
     }));
 });
