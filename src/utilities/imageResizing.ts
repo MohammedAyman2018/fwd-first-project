@@ -3,7 +3,6 @@ import path from 'path';
 import sharp from 'sharp';
 
 export default function (
-  data: Buffer,
   fileName: string,
   width: number,
   height: number

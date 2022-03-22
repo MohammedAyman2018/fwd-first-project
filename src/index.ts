@@ -25,9 +25,9 @@ app.get(
     const imagesPath = path.join(__dirname, '..', 'images');
     const exactImagePath = path.join(imagesPath, fileName as string);
     try {
-      fs.readFile(exactImagePath, (err: Error | null, data: Buffer) => {
+      fs.readFile(exactImagePath, (err: Error | null) => {
         if (err) return res.status(500).json("Can't find this image.");
-        createThump(data, String(fileName), Number(width), Number(height));
+        createThump(String(fileName), Number(width), Number(height));
         return res.sendFile(
           path.join(__dirname, '..', 'thump', `${fileName}.png`)
         );
