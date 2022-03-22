@@ -15,10 +15,10 @@ app.get(
     // Validate all queries are provided.
     if (!fileName) return res.status(400).json('please provide fileName query');
     if (!width) return res.status(400).json('please provide width query');
-    if (isNaN(Number(width)))
+    if (isNaN(Number(width)) || Number(width) < 0)
       return res.status(400).json('please provide valid width query');
     if (!height) return res.status(400).json('please provide height query');
-    if (isNaN(Number(height)))
+    if (isNaN(Number(height)) || Number(height) < 0)
       return res.status(400).json('please provide valid height query');
 
     // Get the required image.
