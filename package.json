@@ -1,10 +1,8 @@
 {
   "dependencies": {
     "express": "^4.17.3",
-    "jasmine": "^4.0.2",
     "prettier": "^2.6.0",
-    "sharp": "^0.30.3",
-    "supertest": "^6.2.2"
+    "sharp": "^0.30.3"
   },
   "name": "nd-0067-c1-building-a-server-project-starter-master",
   "description": "This project aims to give you a real-world scenario in which you would read and write to your disk via a Node.js express server rather than a database. The project you create serves two purposes: to prepare you for setting up scalable code and architecture for real-world projects and tie together some of the most popular middleware and utilities found in Node.js projects. This project barely touches the surface of what is possible but will prove your ability to use what you’ve learned in real-world scenarios.",
@@ -20,7 +18,9 @@
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "jasmine": "^4.0.2",
     "jasmine-spec-reporter": "^7.0.0",
+    "supertest": "^6.2.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
   },
