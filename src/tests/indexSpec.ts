@@ -3,6 +3,7 @@ import app from '../index';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
+import imageResizing from '../utilities/imageResizing';
 const request = supertest(app);
 
 describe('Test query validation', () => {
@@ -47,21 +48,14 @@ describe('Test the logic', () => {
   });
 
   it('Test image processing function in isolation without sending a request to server.', () => {
+    imageResizing('fjord.png', 300, 600);
     fs.readFile(
-      path.join(__dirname, '..', '..', 'images', 'fjord.png'),
-
+      path.join(__dirname, '..', '..', 'thump', 'fjord.png'),
       async (err: Error | null, data: Buffer) => {
         if (err) throw err;
-        sharp(data)
-          .resize(300, 600)
-          .toFile(
-            path.join(__dirname, '..', '..', 'images', `fjord.png`),
-            (err, info) => {
-              if (err) throw err;
-              expect(info.width).toBe(300);
-              expect(info.height).toBe(600);
-            }
-          );
+        const info = await sharp(data).metadata();
+        expect(info.width).toBe(300);
+        expect(info.height).toBe(600);
       }
     );
   });
