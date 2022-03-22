@@ -1,6 +1,8 @@
 import supertest from 'supertest';
 import app from '../index';
 import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
 const request = supertest(app);
 
 describe('Test query validation', () => {
@@ -43,6 +45,27 @@ describe('Test the logic', () => {
     expect(response.status).toBe(500);
     expect(response.body).toBe("Can't find this image.");
   });
+
+  it('Test image processing function in isolation without sending a request to server.', () => {
+    fs.readFile(
+      path.join(__dirname, '..', '..', 'images', 'fjord.png'),
+
+      async (err: Error | null, data: Buffer) => {
+        if (err) throw err;
+        sharp(data)
+          .resize(300, 600)
+          .toFile(
+            path.join(__dirname, '..', '..', 'images', `fjord.png`),
+            (err, info) => {
+              if (err) throw err;
+              expect(info.width).toBe(300);
+              expect(info.height).toBe(600);
+            }
+          );
+      }
+    );
+  });
+
   it('Api Should return a buffer image of 300 width and 600 height', async () => {
     const response = await request.get(
       '/api/images?fileName=fjord.jpg&width=300&height=600'
