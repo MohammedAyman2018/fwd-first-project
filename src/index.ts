@@ -23,15 +23,21 @@ app.get(
 
     // Get the required image.
     const imagesPath = path.join(__dirname, '..', 'images');
-    const exactImagePath = path.join(imagesPath, fileName as string);
+    const exactImagePath = path.join(imagesPath, `${fileName}.jpg`);
     try {
-      fs.readFile(exactImagePath, (err: Error | null) => {
-        if (err) return res.status(500).json("Can't find this image.");
-        createThump(String(fileName), Number(width), Number(height));
-        return res.sendFile(
-          path.join(__dirname, '..', 'thump', `${fileName}.png`)
-        );
-      });
+      fs.readFile(
+        exactImagePath,
+        async (
+          err: Error | null,
+          data: Buffer
+        ): Promise<void | express.Response<string, Record<string, File>>> => {
+          if (err) return res.status(500).json("Can't find this image.");
+          await createThump(data, `${fileName}`, Number(width), Number(height));
+          return res.sendFile(
+            path.join(__dirname, '..', 'thump', `${fileName}.jpg`)
+          );
+        }
+      );
     } catch (error) {
       return res.status(500).json(`Something wrong happened ${error}`);
     }
