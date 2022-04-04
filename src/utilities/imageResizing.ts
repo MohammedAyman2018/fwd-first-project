@@ -15,16 +15,6 @@ export default async function (
   width: number,
   height: number
 ): Promise<void> {
-  fs.readFile(
-    path.join(__dirname, '..', '..', 'thump', `${fileName}.jpg`),
-    async (err: Error | null, data: Buffer) => {
-      if (data) {
-        // This means there is thump with that name already.
-        const metadata = await sharp(data).metadata();
-        if (metadata.width === width && metadata.height === height) return;
-      }
-    }
-  );
   // This means there is no thump with that name OR there is thumb but it's not with same dimensions
   await sharp(imageData)
     .resize(width, height)
